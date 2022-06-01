@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import Carousel from 'react-bootstrap/Carousel'
+import Carousel from 'react-bootstrap/Carousel';
+import Image from 'react-bootstrap/Image';
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class BestBooks extends React.Component {
   /* TODO: Make a GET request to your API to fetch all the books from the database  */
 
   async componentDidMount() {
-    let url = `${process.env.SERVER}/books`;
+    let url = `${process.env.REACT_APP_SERVER}/books`;
     const response = await axios.get(url);
     this.setState({ books: response.data })
   }
@@ -25,19 +26,23 @@ class BestBooks extends React.Component {
     return (
       <>
         <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
-        <Carousel>
-          {this.state.books.length ? this.state.books.map(value => (
-            <Carousel.Item key={value._id}>
-              <Carousel.Caption>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          )) : (
+        {this.state.books.length ?
+          <Carousel variant='dark'>
+            {
+              this.state.books.map(value => (
+                <Carousel.Item key={value._id}>
+                  <Image src="https://via.placeholder.com/150"/>
+                  <Carousel.Caption>
+                    <h3>{value.title}</h3>
+                    <p>{value.description}</p>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              ))
+            }
+          </Carousel> : (
             <h3>No Books Found :(</h3>
           )
-          }
-        </Carousel>
+        }
       </>
     )
   }
